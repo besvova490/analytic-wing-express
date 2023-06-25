@@ -5,8 +5,8 @@ module.exports = {
     "node": true
   },
   "extends": [
-    "plugin:@typescript-eslint/recommended",
     "airbnb-base",
+    "airbnb-typescript/base",
     "plugin:node/recommended",
     "plugin:security/recommended"
   ],
@@ -16,13 +16,21 @@ module.exports = {
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2020,
+    "project": "./tsconfig.json"
   },
   "rules": {
+    "import/no-extraneous-dependencies": "off",
+    "import/no-cycle": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "node/file-extension-in-import": "off",
+    "node/no-missing-import": "off",
+    "import/prefer-default-export": "off",
+    "quotes": ["error", "single"],
     "consistent-return": "off",
     "no-param-reassign": "off",
     "node/exports-style": ["error", "module.exports"],
-    "node/file-extension-in-import": ["error", "always"],
     "node/prefer-global/buffer": ["error", "always"],
     "node/prefer-global/console": ["error", "always"],
     "node/prefer-global/process": ["error", "always"],
@@ -34,5 +42,5 @@ module.exports = {
       "error",
       { ignores: ["modules"] },
     ],
-  }
+  },
 }

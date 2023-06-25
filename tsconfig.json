@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "target": "es5",
+      "target": "es6",
       "module": "commonjs",
       "sourceMap": true,
       "outDir": "./build",
@@ -9,10 +9,11 @@
       "noImplicitAny": true,
       "moduleResolution": "node",
       "baseUrl": "./src",
-      /* Advanced Options */
       "skipLibCheck": true,
       "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "strictPropertyInitialization": false,
   },
   "lib": ["es2015"],
   "include": ["src/**/*"],
