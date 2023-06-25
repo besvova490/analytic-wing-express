@@ -1,0 +1,5 @@
+node_modules
+coverage/
+models/index.js
+__mocks__/
+.eslintrc.js
