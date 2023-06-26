@@ -14,9 +14,10 @@ const authRouter = Router();
 authRouter.get('/profile', authMiddleware, userController.get);
 authRouter.patch('/profile', authMiddleware, userController.update);
 authRouter.post('/register', userController.create);
-authRouter.post('/login', userController.login);
+
 authRouter.get('/users', userController.getAll);
 
+authRouter.post('/login', userController.login);
 authRouter.post('/refresh', async (req, res, next) => {
   try {
     const { refreshToken } = req.body;

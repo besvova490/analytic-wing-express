@@ -20,6 +20,7 @@ module.exports = {
     "project": "./tsconfig.json"
   },
   "rules": {
+    "node/no-extraneous-import": "off",
     "import/no-extraneous-dependencies": "off",
     "import/no-cycle": "off",
     "import/extensions": "off",

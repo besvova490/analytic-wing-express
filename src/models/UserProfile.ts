@@ -4,6 +4,8 @@ import {
   Column,
   OneToMany,
   BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 // models
@@ -31,4 +33,10 @@ export class UserProfile extends BaseEntity {
 
   @OneToMany(() => WebApp, (webApp) => webApp.userProfile, { cascade: ['remove'] })
     webApps: WebApp[];
+
+  @CreateDateColumn()
+    createdAt: Date;
+
+  @UpdateDateColumn()
+    updatedAt: Date;
 }

@@ -20,8 +20,9 @@ import './global';
 // Boot express
 const app: Application = express();
 
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: '*', credentials: true, allowedHeaders: '*' }));
 app.use(express.json());
+app.use(express.text());
 app.use(methodOverride());
 app.use(router);
 app.use(errorHandler);

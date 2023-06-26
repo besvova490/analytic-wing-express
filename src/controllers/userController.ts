@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 
 // models
 import { UserProfile } from '../models/UserProfile';
+import { WebApp } from '../models/WebApp';
 
 // helpers
 import jwtTokensHelpers from '../helpers/jwtTokensHelpers';
@@ -41,7 +42,7 @@ const userController = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.user as UserProfile;
-      const user = await UserProfile.findOne({ where: { email } });
+      const user = await UserProfile.findOne({ where: { email }, relations: { webApps: true } });
 
       res.status(200).json(user);
     } catch (e: any) {
@@ -64,7 +65,18 @@ const userController = {
     }
   },
 
-  getAll: async (req: Request, res: Response) => {
+  getMyApps: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.user as UserProfile;
+      const userWebApps = await WebApp.find({ where: { userProfile: { id } } });
+
+      res.status(200).json(userWebApps);
+    } catch (e: any) {
+      next(new Error(e.message));
+    }
+  },
+
+  getAll: async (_: Request, res: Response) => {
     const allUsers = await UserProfile.find();
 
     res.status(200).json(allUsers);
