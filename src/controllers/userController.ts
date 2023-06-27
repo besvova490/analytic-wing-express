@@ -22,7 +22,7 @@ const userController = {
       const isExist = await UserProfile.findOneBy({ email });
 
       if (isExist) {
-        return res.status(400).json({ detail: 'User already exists' });
+        return res.status(400).json({ details: 'User already exists' });
       }
 
       const userProfile = await UserProfile.create({
@@ -30,7 +30,7 @@ const userController = {
         lastName,
         email,
         password: bcrypt.hashSync(password, 10),
-        avatar,
+        avatar: avatar || '',
       }).save();
 
       res.status(201).json(userProfile);
