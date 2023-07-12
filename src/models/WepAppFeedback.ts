@@ -2,7 +2,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
@@ -12,31 +13,26 @@ import {
 import { WebApp } from './WebApp';
 
 @Entity()
-export class UserProfile extends BaseEntity {
+export class WepAppFeedback extends BaseEntity {
   @PrimaryGeneratedColumn()
     id: number;
 
   @Column({ unique: true, nullable: false })
-    email: string;
+    userId: string;
 
   @Column({ nullable: false })
-    password: string;
+    feedback: string;
 
-  @Column()
-    firstName: string;
-
-  @Column()
-    lastName: string;
-
-  @Column({ nullable: true })
-    avatar: string;
-
-  @OneToMany(() => WebApp, (webApp) => webApp.userProfile, { cascade: ['remove'] })
-    webApps: WebApp[];
+  @Column({ nullable: false })
+    email: string;
 
   @CreateDateColumn()
     createdAt: Date;
 
   @UpdateDateColumn()
     updatedAt: Date;
+
+  @ManyToOne(() => WebApp, (webApp) => webApp.events)
+  @JoinColumn({ name: 'webAppId' })
+    webApp: WebApp;
 }

@@ -13,6 +13,7 @@ import {
 // models
 import { UserProfile } from './UserProfile';
 import { Event } from './Event';
+import { WepAppFeedback } from './WepAppFeedback';
 
 @Entity()
 export class WebApp extends BaseEntity {
@@ -20,7 +21,19 @@ export class WebApp extends BaseEntity {
     id: number;
 
   @Column({ unique: true, nullable: false })
-    domain: string;
+    url: string;
+
+  @Column({ nullable: true })
+    preview: string;
+
+  @Column({ nullable: false })
+    title: string;
+
+  @Column({ nullable: false })
+    metaTitle: string;
+
+  @Column({ nullable: false })
+    accessToken: string;
 
   @Column()
     info: string;
@@ -37,4 +50,7 @@ export class WebApp extends BaseEntity {
 
   @OneToMany(() => Event, (event) => event.webApp, { cascade: ['remove'] })
     events: Event[];
+
+  @OneToMany(() => WepAppFeedback, (feedback) => feedback.webApp, { cascade: ['remove'] })
+    feedbacks: WepAppFeedback[];
 }

@@ -19,6 +19,14 @@ function generateTokens({ id, email }: { id: number, email: string }) {
   return { accessToken, refreshToken };
 }
 
+function generateWebAppToken({ url, email }: { url: string, email: string }) {
+  const accessToken = JWT.sign(
+    { url, email },
+    process.env.EXPRESS_APP_JWT_ACCESS_SECRET as string,
+  );
+  return accessToken;
+}
+
 function verifyToken(
   refreshToken: string,
   callback: (args: { accessToken: string, refreshToken: string }) => void,
@@ -43,4 +51,5 @@ function verifyToken(
 export default {
   generateTokens,
   verifyToken,
+  generateWebAppToken,
 };
