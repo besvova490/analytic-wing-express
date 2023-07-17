@@ -1,5 +1,5 @@
 export default interface WepApp {
   id: number;
-  domain: string;
+  url: string;
   info?: string;
 }

@@ -86,10 +86,10 @@ export default {
     try {
       const { webAppId } = req.params;
       const { monthly, weekly, yearly } = req.query;
+      const webAppUrl = req.webApp?.url as string;
 
-      console.log(webAppId);
-
-      const webApp = await WebApp.findOne({ where: { id: +webAppId } });
+      const whereQuery = webAppId ? { id: +webAppId } : { url: webAppUrl };
+      const webApp = await WebApp.findOne({ where: whereQuery });
 
       if (!webApp) {
         return res.status(404).json({ detail: 'WebApp not found' });
@@ -100,7 +100,7 @@ export default {
           .createQueryBuilder('event')
           .select('date_trunc(\'month\', event.createdAt) as month')
           .where('event.event = :event', { event: 'page_view' })
-          .andWhere('event.webAppId = :webAppId', { webAppId: +webAppId })
+          .andWhere('event.webAppId = :webAppId', { webAppId: webApp.id })
           .addSelect('COUNT(*)', 'count')
           .groupBy('month')
           .getRawMany();
@@ -114,21 +114,21 @@ export default {
           .select(['event.isMobile as isMobile', 'COUNT(*) as count'])
           .where('event.createdAt BETWEEN :start AND :end', { start: startOfMonth(new Date()), end: new Date() })
           .andWhere('event.event = :event', { event: 'page_view' })
-          .andWhere('event.webAppId = :webAppId', { webAppId: +webAppId })
+          .andWhere('event.webAppId = :webAppId', { webAppId: webApp.id })
           .groupBy('event.isMobile')
           .getRawMany();
 
         const groupedByEvent = await EventRepository.createQueryBuilder('event')
           .select(['event.event as event', 'COUNT(*) as count'])
           .where('event.createdAt BETWEEN :start AND :end', { start: startOfMonth(new Date()), end: new Date() })
-          .andWhere('event.webAppId = :webAppId', { webAppId: +webAppId })
+          .andWhere('event.webAppId = :webAppId', { webAppId: webApp.id })
           .groupBy('event.event')
           .getRawMany();
 
         const groupedByCountries = await EventRepository.createQueryBuilder('event')
           .select(['event.country as country', 'COUNT(*) as count'])
           .where('event.createdAt BETWEEN :start AND :end', { start: startOfMonth(new Date()), end: new Date() })
-          .andWhere('event.webAppId = :webAppId', { webAppId: +webAppId })
+          .andWhere('event.webAppId = :webAppId', { webAppId: webApp.id })
           .groupBy('event.country')
           .getRawMany();
 
@@ -162,7 +162,7 @@ export default {
           .createQueryBuilder('event')
           .select('date_trunc(\'week\', event.createdAt) as week')
           .where('event.event = :event', { event: 'page_view' })
-          .andWhere('event.webAppId = :webAppId', { webAppId: +webAppId })
+          .andWhere('event.webAppId = :webAppId', { webAppId: webApp.id })
           .addSelect('COUNT(*)', 'count')
           .groupBy('week')
           .getRawMany();
@@ -171,7 +171,7 @@ export default {
           .json(events.map((item: Event & { week: Date }) => ({ ...item, week: format(item.week, 'EEEEEE') })));
       }
 
-      const events = await Event.find({ where: { webApp: { id: +webAppId } } });
+      const events = await Event.find({ where: { webApp: { id: webApp.id } } });
 
       res.status(200).json(events);
     } catch (e: any) {

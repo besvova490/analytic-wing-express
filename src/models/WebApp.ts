@@ -14,6 +14,7 @@ import {
 import { UserProfile } from './UserProfile';
 import { Event } from './Event';
 import { WepAppFeedback } from './WepAppFeedback';
+import { WebAppSelector } from './WebAppSelectors';
 
 @Entity()
 export class WebApp extends BaseEntity {
@@ -53,4 +54,7 @@ export class WebApp extends BaseEntity {
 
   @OneToMany(() => WepAppFeedback, (feedback) => feedback.webApp, { cascade: ['remove'] })
     feedbacks: WepAppFeedback[];
+
+  @OneToMany(() => WebAppSelector, (selector) => selector.webApp, { cascade: ['remove'] })
+    selectors: WebAppSelector[];
 }
