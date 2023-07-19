@@ -1,32 +1,18 @@
 version: 0.2
-env:
-  variables:
-    REPOSITORY_URI: ""
-    LC_CTYPE: "C.UTF-8"
-    ENV_BUCKET: ""
-    ENV_FILE: ""
-    TARGETS: ""
-    DISTRIBUTION_ID: ""
 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws --version
-      - echo $AWS_ACCOUNT_ID
-      - echo $AWS_DEFAULT_REGION
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - echo Add env file
   build:
     commands:
       - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t anwg-express .
-      - docker tag anwg-express:latest $REPOSITORY_URI:latest
+      - echo Building the Docker image...          
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
