@@ -24,5 +24,4 @@ phases:
       - docker push $FULL_REPOSITORY_NAME:$IMAGE_TAG
       - printf '[{"name":"'$ecs_container_name'","imageUri":"%s"}]' $FULL_REPOSITORY_NAME:$IMAGE_TAG > imagedefinitions.json
 artifacts:
-  files:
-    - imagedefinitions.json
+  files: imagedefinitions.json
