@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - echo $AWS_ACCOUNT_ID, $AWS_DEFAULT_REGION, $REPOSITORY_URI, $CODEBUILD_RESOLVED_SOURCE_VERSION, $REPOSITORY_NAME
+      - echo $AWS_ACCOUNT_ID, $AWS_DEFAULT_REGION, $REPOSITORY_URI, $CODEBUILD_RESOLVED_SOURCE_VERSION, $REPOSITORY_NAME, $CONTAINER_NAME
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
@@ -22,6 +22,6 @@ phases:
       - echo Pushing the Docker image...
       - docker push $FULL_REPOSITORY_NAME:latest
       - docker push $FULL_REPOSITORY_NAME:$IMAGE_TAG
-      - printf '[{"name":"'$ecs_container_name'","imageUri":"%s"}]' $FULL_REPOSITORY_NAME:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $FULL_REPOSITORY_NAME:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
