@@ -8,14 +8,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node build/index.js",
+    "start": "npm run migration:run-prod && node build/index.js",
     "build": "tsc",
     "lint": "./node_modules/.bin/eslint src/**/*.ts",
     "lint:fix": "./node_modules/.bin/eslint src/**/*.ts --fix",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js -d ./src/services/dbConnection.ts",
+    "typeorm:prod": "ts-node ./node_modules/typeorm/cli.js -d ./build/services/dbConnection.js",
     "migration:generate": "npm run typeorm migration:generate -p ./src/migrations/$npm_config_name",
     "migration:run": "npm run typeorm migration:run",
-    "migration:revert": "npm run typeorm migration:revert"
+    "migration:run-prod": "npm run typeorm:prod migration:run",
+    "migration:revert": "npm run typeorm migration:revert",
+    "migration:revert-prod": "npm run typeorm:prod migration:revert"
   },
   "author": "",
   "license": "ISC",

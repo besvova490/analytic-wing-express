@@ -1,5 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -10,8 +11,8 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.EXPRESS_APP_DB_USER_NAME,
   password: process.env.EXPRESS_APP_DB_USER_PASSWORD,
   database: process.env.EXPRESS_APP_DB_NAME,
-  entities: ['../models/**/*.ts'],
-  migrations: ['../migrations/**/*.ts'],
+  entities: [path.join(__dirname, '../models/**/*.{js,ts}')],
+  migrations: [path.join(__dirname, '../migrations/**/*.{js,ts}')],
   logging: true,
 };
 const dbConnection = new DataSource(dataSourceOptions);
