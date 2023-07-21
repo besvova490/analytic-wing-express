@@ -10,10 +10,9 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.EXPRESS_APP_DB_USER_NAME,
   password: process.env.EXPRESS_APP_DB_USER_PASSWORD,
   database: process.env.EXPRESS_APP_DB_NAME,
-  entities: ['src/models/**/*.ts'],
-  migrations: ['src/migrations/**/*.ts'],
+  entities: ['../models/**/*.ts'],
+  migrations: ['../migrations/**/*.ts'],
   logging: true,
 };
-
 const dbConnection = new DataSource(dataSourceOptions);
 export default dbConnection;

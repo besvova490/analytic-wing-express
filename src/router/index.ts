@@ -19,7 +19,7 @@ router.use('/web-app-feedback', webAppFeedbackRouter);
 router.use('/events', eventRouter);
 router.use('/selectors', webAppSelectorRouter);
 router.use('/file-upload', fileUploadRouter);
-router.use('/health', (_, res) => res.status(200).json({ status: 'OK' }));
+router.use('/health', (_, res) => res.status(200).json({ message: 'OK' }));
 router.use('*', (_, res) => res.status(404).json({ detail: 'Not Found' }));
 
 export default router;

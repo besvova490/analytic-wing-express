@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 // models
 import { UserProfile } from '../models/UserProfile';
@@ -29,7 +29,7 @@ const userController = {
         firstName,
         lastName,
         email,
-        password: bcrypt.hashSync(password, 10),
+        password: bcryptjs.hashSync(password, 10),
         avatar: avatar || '',
       }).save();
 
@@ -89,7 +89,7 @@ const userController = {
       const user = await UserProfile.findOneBy({ email });
 
       if (!user) return res.status(404).json({ details: 'User not found' });
-      if (!bcrypt.compareSync(password, user.password)) return res.status(403).json({ password: 'Invalid password' });
+      if (!bcryptjs.compareSync(password, user.password)) return res.status(403).json({ password: 'Invalid password' });
 
       const { accessToken, refreshToken } = jwtTokensHelpers.generateTokens({ id: user.id, email });
 
