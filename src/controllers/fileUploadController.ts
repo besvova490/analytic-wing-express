@@ -7,8 +7,6 @@ import { s3 } from '../services/aws';
 export default {
   create: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.file, s3);
-
       const payload = {
         Bucket: 'analytic-wing',
         Key: `screenshots/${req.file?.originalname}.${req.file?.mimetype.split('/')[1]}`,
